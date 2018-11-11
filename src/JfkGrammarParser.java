@@ -9,7 +9,8 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class JfkGrammarParser extends Parser {
+public class JfkGrammarParser extends Parser
+{
 	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -85,7 +86,8 @@ public class JfkGrammarParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
-	public static class First_operationContext extends ParserRuleContext {
+	public static class First_operationContext extends ParserRuleContext
+	{
 		public TerminalNode POW() { return getToken(JfkGrammarParser.POW, 0); }
 		public First_operationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);

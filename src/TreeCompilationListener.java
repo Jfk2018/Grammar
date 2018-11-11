@@ -37,31 +37,51 @@ public final class TreeCompilationListener extends JfkGrammarBaseListener
     }
 
     @Override
-    public void exitOperation(JfkGrammarParser.OperationContext ctx) {
-        if (null == ctx.op) // '(' operation ')'
-            return;
-        switch(ctx.op.getType()) {
-            case JfkGrammarParser.Multiply:
-                this._mv.visitInsn(Opcodes.DMUL);
-                break;
-            case JfkGrammarParser.Divide:
-                this._mv.visitInsn(Opcodes.DDIV);
-                break;
-            case JfkGrammarParser.Add:
-                this._mv.visitInsn(Opcodes.DADD);
-                break;
-            case JfkGrammarParser.Subtract:
-                this._mv.visitInsn(Opcodes.DSUB);
-                break;
-            case JfkGrammarParser.Power:
+    public void exitFirst_operation(JfkGrammarParser.First_operationContext ctx)
+    {
+        switch(ctx.getRuleIndex())
+        {
+            case JfkGrammarParser.POW:
                 this._mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D", false);
                 break;
-            case JfkGrammarParser.Max:
-                this._mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "max", "(DD)D", false);
+            default:
+                throw new IllegalArgumentException();
+        }
+        this._currentTreeDepth--;
+    }
+
+    @Override
+    public void exitSecond_operation(JfkGrammarParser.Second_operationContext ctx)
+    {
+        switch(ctx.getRuleIndex())
+        {
+            case JfkGrammarParser.MUL:
+                this._mv.visitInsn(Opcodes.DMUL);
                 break;
-            case JfkGrammarParser.Min:
-                this._mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "min", "(DD)D", false);
+            case JfkGrammarParser.DIV:
+                this._mv.visitInsn(Opcodes.DDIV);
                 break;
+            case JfkGrammarParser.POW:
+                this._mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D", false);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        this._currentTreeDepth--;
+    }
+
+    @Override
+    public void exitThird_operation(JfkGrammarParser.Third_operationContext ctx)
+    {
+        switch(ctx.getRuleIndex())
+        {
+            case JfkGrammarParser.ADD:
+                this._mv.visitInsn(Opcodes.DADD);
+                break;
+            case JfkGrammarParser.SUB:
+                this._mv.visitInsn(Opcodes.DSUB);
+                break;
+
             default:
                 throw new IllegalArgumentException();
         }
