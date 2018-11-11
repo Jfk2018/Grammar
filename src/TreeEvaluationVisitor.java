@@ -1,7 +1,7 @@
-public final class TreeEvaluationVisitor extends JfkGrammarBaseVisitor<Double>
+public final class TreeEvaluationVisitor extends JfkGrammarBaseVisitor<Integer>
 {
     @Override
-    public Double visitNumber(JfkGrammarParser.NumberContext ctx) throws IllegalArgumentException
+    public Integer visitNumber(JfkGrammarParser.NumberContext ctx) throws IllegalArgumentException
     {
         try
         {
@@ -20,7 +20,7 @@ public final class TreeEvaluationVisitor extends JfkGrammarBaseVisitor<Double>
         switch(ctx.getRuleIndex())
         {
             case JfkGrammarParser.POW:
-                operand = Math::pow;
+                operand = (a, b) -> (int)Math.pow(a, b);
                 break;
             default:
                 throw new IllegalArgumentException();
