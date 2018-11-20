@@ -1,0 +1,1 @@
+Problem z uruchomieniem aplikacji
