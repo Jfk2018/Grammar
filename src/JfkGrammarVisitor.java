@@ -1,4 +1,4 @@
-// Generated from C:/Users/damia/Desktop/jfkTest/Grammar\JfkGrammar.g4 by ANTLR 4.7
+// Generated from C:/Users/Konrad/IdeaProjects/stock_tree/Grammar.IntelliJIdea/Grammar\JfkGrammar.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -9,24 +9,6 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * operations with no return type.
  */
 public interface JfkGrammarVisitor<T> extends ParseTreeVisitor<T> {
-	/**
-	 * Visit a parse tree produced by {@link JfkGrammarParser#first_operation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFirst_operation(JfkGrammarParser.First_operationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JfkGrammarParser#second_operation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSecond_operation(JfkGrammarParser.Second_operationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JfkGrammarParser#third_operation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitThird_operation(JfkGrammarParser.Third_operationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JfkGrammarParser#number}.
 	 * @param ctx the parse tree

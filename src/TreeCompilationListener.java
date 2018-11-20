@@ -2,8 +2,7 @@ import org.objectweb.asm.*;
 
 import java.text.ParseException;
 
-public final class TreeCompilationListener extends JfkGrammarBaseListener
-{
+public final class TreeCompilationListener extends JfkGrammarBaseListener {
     private final MethodVisitor _mv;
     private int _currentTreeDepth, _maxTreeDepth;
 
@@ -16,72 +15,49 @@ public final class TreeCompilationListener extends JfkGrammarBaseListener
     }
 
     @Override
-    public void enterExpression(JfkGrammarParser.ExpressionContext ctx)
-    {
+    public void enterResult(JfkGrammarParser.ResultContext ctx) {
         this._currentTreeDepth = 0;
         this._maxTreeDepth = 0;
     }
 
     @Override
-    public void enterNumber(JfkGrammarParser.NumberContext ctx)
-    {
-        this._currentTreeDepth++;
-        if (this._currentTreeDepth > this._maxTreeDepth)
-            this._maxTreeDepth = this._currentTreeDepth;
-
-        try {
-            this._mv.visitLdcInsn(Main.parse(ctx.getText()));
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Number is not of the double type.");
-        }
-    }
-
-    @Override
-    public void exitFirst_operation(JfkGrammarParser.First_operationContext ctx)
-    {
-        switch(ctx.getRuleIndex())
+    public void exitExpression(JfkGrammarParser.ExpressionContext ctx) {
+        if (null == ctx.op) // number
         {
-            case JfkGrammarParser.POW:
-                this._mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D", false);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-        this._currentTreeDepth--;
-    }
+            this._currentTreeDepth++;
+            if (this._currentTreeDepth > this._maxTreeDepth)
+                this._maxTreeDepth = this._currentTreeDepth;
 
-    @Override
-    public void exitSecond_operation(JfkGrammarParser.Second_operationContext ctx)
-    {
-        switch(ctx.getRuleIndex())
-        {
+            try {
+                this._mv.visitLdcInsn(Main.parse(ctx.getText()));
+                return;
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Number is not of the integer type.");
+            }
+        }
+        switch(ctx.op.getType()) {
             case JfkGrammarParser.MUL:
-                this._mv.visitInsn(Opcodes.DMUL);
+                this._mv.visitInsn(Opcodes.IMUL);
                 break;
             case JfkGrammarParser.DIV:
-                this._mv.visitInsn(Opcodes.DDIV);
+                this._mv.visitInsn(Opcodes.IDIV);
+                break;
+            case JfkGrammarParser.ADD:
+                this._mv.visitInsn(Opcodes.IADD);
+                break;
+            case JfkGrammarParser.SUB:
+                this._mv.visitInsn(Opcodes.ISUB);
                 break;
             case JfkGrammarParser.POW:
                 this._mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Math", "pow", "(DD)D", false);
                 break;
-            default:
-                throw new IllegalArgumentException();
-        }
-        this._currentTreeDepth--;
-    }
-
-    @Override
-    public void exitThird_operation(JfkGrammarParser.Third_operationContext ctx)
-    {
-        switch(ctx.getRuleIndex())
-        {
-            case JfkGrammarParser.ADD:
-                this._mv.visitInsn(Opcodes.DADD);
+            case JfkGrammarParser.MOD:
+                this._mv.visitInsn(Opcodes.IDIV);
                 break;
-            case JfkGrammarParser.SUB:
-                this._mv.visitInsn(Opcodes.DSUB);
-                break;
-
+            case JfkGrammarParser.LP:
+                return;
+            case JfkGrammarParser.RP:
+                return;
             default:
                 throw new IllegalArgumentException();
         }

@@ -9,29 +9,29 @@ import org.objectweb.asm.*;
 
 import static java.lang.System.out;
 
-public class Main
-{
+public class Main {
     private static final DecimalFormat _format = new DecimalFormat();
 
-    static
-    {
+    static {
         DecimalFormatSymbols _symbols = new DecimalFormatSymbols();
-        _symbols.setDecimalSeparator('.');
-        _symbols.setGroupingSeparator(Character.MIN_VALUE);
         _format.setDecimalFormatSymbols(_symbols);
     }
 
-    static double parse(String text) throws ParseException
-    {
-        return _format.parse(text).doubleValue();
+    static int parse(String text) throws ParseException {
+        int myInt;
+        if(text.charAt(0) == '0' && (text.charAt(1) == 'x' || text.charAt(1) == 'X'))
+            myInt = Integer.parseInt(text.substring(2),16);
+        else if(text.charAt(0) == '0' && (text.charAt(1) != 'x' || text.charAt(1) != 'X'))
+            myInt = Integer.parseInt(text.substring(1),8);
+        else
+            myInt = Integer.parseInt(text,10);
+        return myInt;
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         String input;
         out.println("Key in the input string:");
-        try (Scanner reader = new Scanner(System.in))
-        {
+        try (Scanner reader = new Scanner(System.in)) {
             input = reader.nextLine();
         }
 
@@ -41,16 +41,15 @@ public class Main
         JfkGrammarParser parser = new JfkGrammarParser(tokenStream);
         //parser.removeErrorListeners();
         parser.setBuildParseTree(true);
-        ParseTree tree = parser.expression();
+        ParseTree tree = parser.result();
         int errors = parser.getNumberOfSyntaxErrors();
 
         out.println("Number of syntax errors: " + errors);
         out.println(tree.toStringTree(parser));
 
-        if (0 == errors)
-        {
+        if (0 == errors) {
             TreeEvaluationVisitor visitor = new TreeEvaluationVisitor();
-            double result = visitor.visit(tree);
+            int result = visitor.visit(tree);
             out.println("Result = " + result);
 
             // Synteza
@@ -65,8 +64,7 @@ public class Main
         compile(tree, "Grammar/out/CompilationClass.class");
     }
 
-    private static void compile(ParseTree tree, String classPath)
-    {
+    private static void compile(ParseTree tree, String classPath) {
         if (null == tree)
             throw new NullPointerException("parse tree cannot be null.");
 

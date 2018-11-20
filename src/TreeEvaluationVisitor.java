@@ -1,75 +1,45 @@
-public final class TreeEvaluationVisitor extends JfkGrammarBaseVisitor<Integer>
-{
-    @Override
-    public Integer visitNumber(JfkGrammarParser.NumberContext ctx) throws IllegalArgumentException
-    {
-        try
-        {
-            return Main.parse(ctx.getText());
-        }
-        catch (java.text.ParseException e)
-        {
-            throw new IllegalArgumentException();
-        }
-    }
+public final class TreeEvaluationVisitor extends JfkGrammarBaseVisitor<Integer> {
 
-    @Override
-    public Integer visitFirst_operation(JfkGrammarParser.First_operationContext ctx) throws IllegalArgumentException
-    {
-        Function<Integer, Integer, Integer> operand;
-        switch(ctx.getRuleIndex())
+    public Integer visitExpression(JfkGrammarParser.ExpressionContext ctx) throws IllegalArgumentException {
+        if (null == ctx.op) // number
         {
-            case JfkGrammarParser.POW:
-                operand = (a, b) -> (int)Math.pow(a, b);
-                break;
-            default:
+            try {
+                return Main.parse(ctx.getText());
+            } catch (java.text.ParseException e) {
                 throw new IllegalArgumentException();
+            }
         }
 
-        int left = visit(ctx.getChild(1));
-        int right = visit(ctx.getChild(2));
-        return operand.binary(left, right);
-    }
-
-    @Override
-    public Integer visitSecond_operation(JfkGrammarParser.Second_operationContext ctx) throws IllegalArgumentException
-    {
         Function<Integer, Integer, Integer> operand;
-        switch(ctx.getRuleIndex())
-        {
+        switch(ctx.op.getType()) {
             case JfkGrammarParser.MUL:
                 operand = (a, b) -> a * b;
                 break;
             case JfkGrammarParser.DIV:
                 operand = (a, b) -> a / b;
                 break;
-            default:
-                throw new IllegalArgumentException();
-        }
-
-        int left = visit(ctx.getChild(1));
-        int right = visit(ctx.getChild(2));
-        return operand.binary(left, right);
-    }
-
-    @Override
-    public Integer visitThird_operation(JfkGrammarParser.Third_operationContext ctx) throws IllegalArgumentException
-    {
-        Function<Integer, Integer, Integer> operand;
-        switch(ctx.getRuleIndex())
-        {
             case JfkGrammarParser.ADD:
                 operand = (a, b) -> a + b;
                 break;
             case JfkGrammarParser.SUB:
                 operand = (a, b) -> a - b;
                 break;
+            case JfkGrammarParser.POW:
+                operand = (a, b) -> (int)Math.pow(a, b);
+                break;
+            case JfkGrammarParser.MOD:
+                operand = (a, b) -> a % b;
+                break;
+            case JfkGrammarParser.LP:
+                return visit(ctx.expression(0));
+            case JfkGrammarParser.RP:
+                return visit(ctx.expression(0));
             default:
                 throw new IllegalArgumentException();
         }
 
-        int left = visit(ctx.getChild(1));
-        int right = visit(ctx.getChild(2));
+        int left = visit(ctx.expression(0));
+        int right = visit(ctx.expression(1));
         return operand.binary(left, right);
     }
 }

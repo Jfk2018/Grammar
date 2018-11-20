@@ -1,4 +1,4 @@
-// Generated from C:/Users/damia/Desktop/jfkTest/Grammar\JfkGrammar.g4 by ANTLR 4.7
+// Generated from C:/Users/Konrad/IdeaProjects/stock_tree/Grammar.IntelliJIdea/Grammar\JfkGrammar.g4 by ANTLR 4.7
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -9,44 +9,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-public class JfkGrammarBaseListener implements JfkGrammarListener
-{
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFirst_operation(JfkGrammarParser.First_operationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFirst_operation(JfkGrammarParser.First_operationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSecond_operation(JfkGrammarParser.Second_operationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSecond_operation(JfkGrammarParser.Second_operationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterThird_operation(JfkGrammarParser.Third_operationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitThird_operation(JfkGrammarParser.Third_operationContext ctx) { }
+public class JfkGrammarBaseListener implements JfkGrammarListener {
 	/**
 	 * {@inheritDoc}
 	 *
